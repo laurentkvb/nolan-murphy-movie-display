@@ -31,6 +31,8 @@ The frontend is written in TypeScript and built using the [React.js](https://rea
 - Prettier
 - React
 - ESLint
+- jest
+- styled components
 
 ## Launching the Application Locally:
 
