@@ -1,14 +1,18 @@
-import { MovieTile } from "./components/MovieTile/MovieTile.tsx";
+import { useState } from "react";
 import { useMoviesInvolvingActors } from "./hooks/useMoviesInvolvingActors.ts";
+
+import { MovieTile } from "./components/MovieTile";
+import { Modal } from "./components/Modal";
 
 import spinner from "./assets/spinner.gif";
 import NolanMurphy from "./assets/Nolan-Murphy.png";
 
 import { Fade } from "react-swift-reveal";
+import { Movie } from "./types/types.ts";
 
 import "./App.css";
 
-function App() {
+export function App() {
   const { movies, fetchState } = useMoviesInvolvingActors(
     "Christopher Nolan",
     "Cillian Murphy",
@@ -19,17 +23,24 @@ function App() {
     "Cillian Murphy",
     "Movie Collaborations",
   ];
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+
+  const handleMovieClick = (movie: Movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const closeModal = () => {
+    setSelectedMovie(null);
+  };
 
   return (
     <>
       <div>
-        <a href="https://react.dev" target="_blank">
-          <img
-            src={NolanMurphy}
-            className="logo react"
-            alt="Nolan and Murphy in a heartshape"
-          />
-        </a>
+        <img
+          src={NolanMurphy}
+          className="logo react"
+          alt="Nolan and Murphy in a heartshape"
+        />
       </div>
       <div
         style={{
@@ -67,12 +78,17 @@ function App() {
 
         {fetchState === "idle" &&
           movies.length > 0 &&
-          Array.from(movies).map((movie) => (
-            <MovieTile key={movie.id} movie={movie} />
+          movies.map((movie) => (
+            <div key={movie.id} onClick={() => handleMovieClick(movie)}>
+              <MovieTile movie={movie} />
+            </div>
           ))}
       </div>
+      <Modal
+        isOpen={selectedMovie !== null}
+        onClose={closeModal}
+        movie={selectedMovie}
+      />
     </>
   );
 }
-
-export default App;

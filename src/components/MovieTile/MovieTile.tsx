@@ -14,6 +14,7 @@ import { Movie } from "../../types/types.ts";
 interface MovieTileProps {
   movie: Movie;
 }
+
 export const MovieTile: FC<MovieTileProps> = ({ movie }) => {
   const { poster_path, title, overview, release_date } = movie;
 
@@ -30,7 +31,7 @@ export const MovieTile: FC<MovieTileProps> = ({ movie }) => {
           <MovieTitle>{title}</MovieTitle>
           <Overview>{overview}</Overview>
           <ReleaseDate>Release Date: {release_date}</ReleaseDate>
-          <ReadMoreLink href="#">Read more</ReadMoreLink>
+          <ReadMoreLink>Read more</ReadMoreLink>
         </ContentContainer>
       </TileContainer>
     </Fade>
