@@ -1,6 +1,6 @@
 import React from "react";
 import { Movie } from "../../types/types.ts";
-import { CloseButton, ModalBackground, ModalContent } from "./Modal.styles.tsx";
+import { CloseButton, ModalBackground, ModalContent } from "./Modal.styles.ts";
 
 interface ModalProps {
   isOpen: boolean;
