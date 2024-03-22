@@ -1,4 +1,4 @@
-import { MessageObject, Movie } from "./types/types.ts";
+import { MessageObject, Movie } from "../types/types.ts";
 
 const apiKey: string = process.env.API_MOVIE_KEY || "err";
 const baseUrl: string = "https://api.themoviedb.org/3";
