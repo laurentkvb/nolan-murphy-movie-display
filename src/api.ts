@@ -1,8 +1,24 @@
-const apiKey: string = process.env.API_MOVIE_KEY || "niks";
+const apiKey: string = process.env.API_MOVIE_KEY || "err";
 const baseUrl: string = "https://api.themoviedb.org/3";
 
-interface Movie {
+export interface Movie {
+  adult: boolean;
+  backdrop_path: string | null;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string | null;
+  release_date: string;
   title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  character: string;
+  credit_id: string;
+  order: number;
 }
 
 async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
@@ -14,46 +30,45 @@ async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
   );
   const data = await response.json();
 
-  console.log(`data.cast.length(${data.cast.length})`);
-
   allMovieCredits = allMovieCredits.concat(data.cast).concat(data.crew);
 
-  return allMovieCredits;
+  return allMovieCredits.concat(data.cast).concat(data.crew);
 }
 
 export async function getMoviesInvolvingActors(
   actor1Name: string,
   actor2Name: string,
-): Promise<string[]> {
+): Promise<Movie[]> {
   try {
-    console.log({ apiKey });
-
     // Search for Christopher Nolan
-    const actor1Response = await fetch(
+    const nolanResponse = await fetch(
       `${baseUrl}/search/person?api_key=${apiKey}&query=${encodeURIComponent(actor1Name)}`,
     );
-    const actor1Data = await actor1Response.json();
-    const actor1Id: number = actor1Data.results[0].id;
+    const nolanData = await nolanResponse.json();
+    const nolanId: number = nolanData.results[0].id;
 
     // Search for Cillian Murphy
-    const actor2Response = await fetch(
+    const murphyResponse = await fetch(
       `${baseUrl}/search/person?api_key=${apiKey}&query=${encodeURIComponent(actor2Name)}`,
     );
-    const actor2Data = await actor2Response.json();
-    const actor2Id: number = actor2Data.results[0].id;
+    const murphyData = await murphyResponse.json();
+    const murphy2Id: number = murphyData.results[0].id;
 
     // Get all movie credits for Christopher Nolan and Cillian Murphy
-    const actor1Movies: Movie[] = await getAllMovieCredits(actor1Id);
-    const actor2Movies: Movie[] = await getAllMovieCredits(actor2Id);
+    const nolanMovies = getAllMovieCredits(nolanId);
+    const murphyMovies = getAllMovieCredits(murphy2Id);
+    const promises = await Promise.all([nolanMovies, murphyMovies]);
 
-    // Find common movies
-    const commonMovies: string[] = actor1Movies
-      .filter((movie1) =>
-        actor2Movies.some((movie2) => movie2.title === movie1.title),
-      )
-      .map((movie) => movie.title);
+    const [allNolanMovies, allMurphyMovies] = promises;
 
-    return Array.from(new Set(commonMovies));
+    const commonMovies = allNolanMovies.filter((movie1) =>
+      allMurphyMovies.some((movie2) => movie2.title === movie1.title),
+    );
+
+    return Array.from(new Set(commonMovies.map((movie) => movie.id)))
+      .map((id) => commonMovies.find((movie) => movie.id === id))
+      .filter((movie): movie is Movie => movie !== undefined);
+
   } catch (error) {
     throw new Error(
       "Error fetching movies: " + (error as { message: string }).message,
