@@ -21,7 +21,7 @@ export interface Movie {
   order: number;
 }
 
-async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
+ export async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
   const page: number = 1;
   let allMovieCredits: Movie[] = [];
 
@@ -32,7 +32,7 @@ async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
 
   allMovieCredits = allMovieCredits.concat(data.cast).concat(data.crew);
 
-  return allMovieCredits.concat(data.cast).concat(data.crew);
+  return allMovieCredits;
 }
 
 export async function getMoviesInvolvingActors(
