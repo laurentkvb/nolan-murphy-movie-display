@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 1380px;
   padding: 2rem;
   text-align: center;
   margin: 0 auto 100px;
@@ -45,8 +45,4 @@
 .card:hover {
   background-color: rgba(128, 128, 128, 0.37);
   transition: background-color 0.5s ease;
-}
-
-.read-the-docs {
-  color: #888;
 }

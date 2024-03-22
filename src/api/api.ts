@@ -1,35 +1,13 @@
+import { MessageObject, Movie } from "./types/types.ts";
+
 const apiKey: string = process.env.API_MOVIE_KEY || "err";
 const baseUrl: string = "https://api.themoviedb.org/3";
-
-interface MessageObject {
-  message: string;
-}
 
 export const hasMessageField = (obj: unknown): obj is MessageObject =>
   typeof obj === "object" &&
   obj !== null &&
   "message" in obj &&
   typeof obj.message === "string";
-
-export interface Movie {
-  adult: boolean;
-  backdrop_path: string | null;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string | null;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-  character: string;
-  credit_id: string;
-  order: number;
-}
 
 export async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
   const page: number = 1;

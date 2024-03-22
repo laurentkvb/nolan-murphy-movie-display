@@ -1,28 +1,24 @@
-import { useEffect, useState } from "react";
-import { getMoviesInvolvingActors, Movie } from "./api";
-import NolanMurphy from "./assets/Nolan-Murphy.png";
 import { MovieTile } from "./components/MovieTile/MovieTile.tsx";
+import { useMoviesInvolvingActors } from "./hooks/useMoviesInvolvingActors.ts";
+
+import spinner from "./assets/spinner.gif";
+import NolanMurphy from "./assets/Nolan-Murphy.png";
+
+import { Fade } from "react-swift-reveal";
+
 import "./App.css";
 
 function App() {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const { movies, fetchState } = useMoviesInvolvingActors(
+    "Christopher Nolan",
+    "Cillian Murphy",
+  );
   const textSegments = [
     "Christopher Nolan",
     "&",
     "Cillian Murphy",
     "Movie Collaborations",
   ];
-
-  useEffect(() => {
-    getMoviesInvolvingActors("Christopher Nolan", "Cillian Murphy")
-      .then((movies) => {
-        setMovies(movies);
-        console.log("Movies involving both actors:", movies);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   return (
     <>
@@ -58,7 +54,19 @@ function App() {
           gap: 10,
         }}
       >
-        {movies &&
+        {fetchState === "fetching" && (
+          <Fade>
+            <div>
+              <img src={spinner} alt="spinner gif for loading" />
+            </div>
+          </Fade>
+        )}
+        {fetchState === "idle" && movies.length === 0 && (
+          <div>No common movies found</div>
+        )}
+
+        {fetchState === "idle" &&
+          movies.length > 0 &&
           Array.from(movies).map((movie) => (
             <MovieTile key={movie.id} movie={movie} />
           ))}
