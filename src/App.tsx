@@ -12,6 +12,7 @@ import "./App.css";
 import { TitleSection } from "./components/TitleSection";
 import { Spinner } from "./components/Spinner";
 import { BodyWrapper } from "./App.styles.ts";
+import { MusicButton } from "./components/MusicButton/MusicButton.tsx";
 
 export function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
@@ -51,6 +52,7 @@ export function App() {
         onClose={closeModal}
         movie={selectedMovie}
       />
+      <MusicButton />
     </>
   );
 }
