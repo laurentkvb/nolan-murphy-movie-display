@@ -1,6 +1,16 @@
 const apiKey: string = process.env.API_MOVIE_KEY || "err";
 const baseUrl: string = "https://api.themoviedb.org/3";
 
+interface MessageObject {
+  message: string;
+}
+
+export const hasMessageField = (obj: unknown): obj is MessageObject =>
+  typeof obj === "object" &&
+  obj !== null &&
+  "message" in obj &&
+  typeof obj.message === "string";
+
 export interface Movie {
   adult: boolean;
   backdrop_path: string | null;
@@ -21,7 +31,7 @@ export interface Movie {
   order: number;
 }
 
- export async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
+export async function getAllMovieCredits(actorId: number): Promise<Movie[]> {
   const page: number = 1;
   let allMovieCredits: Movie[] = [];
 
@@ -32,7 +42,7 @@ export interface Movie {
 
   allMovieCredits = allMovieCredits.concat(data.cast).concat(data.crew);
 
-  return allMovieCredits;
+  return allMovieCredits.filter((movie): movie is Movie => movie !== undefined);
 }
 
 export async function getMoviesInvolvingActors(
@@ -68,10 +78,18 @@ export async function getMoviesInvolvingActors(
     return Array.from(new Set(commonMovies.map((movie) => movie.id)))
       .map((id) => commonMovies.find((movie) => movie.id === id))
       .filter((movie): movie is Movie => movie !== undefined);
-
   } catch (error) {
-    throw new Error(
-      "Error fetching movies: " + (error as { message: string }).message,
-    );
+    console.error(error);
+    let errMsg = "";
+
+    if (typeof error === "string") {
+      errMsg = error;
+    }
+
+    if (hasMessageField(error) && error.message) {
+      errMsg = error.message;
+    }
+
+    throw new Error(`Error fetching movies: ${errMsg}`);
   }
 }
