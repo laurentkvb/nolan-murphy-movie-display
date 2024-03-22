@@ -20,7 +20,7 @@ and the personal preferences
 
 ## Live Website
 
-The live website can be viewed at: 
+The live website can be viewed at: https://nolan-murphy-movie-display.vercel.app/
 
 ## Frontend stack
 
