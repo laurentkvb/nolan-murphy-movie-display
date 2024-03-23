@@ -3,10 +3,6 @@ import { Title, TitleContainer } from "./TitleSection.styles.ts";
 
 export const TitleSection: FC = () => (
   <TitleContainer>
-    {["Christopher Nolan", "&", "Cillian Murphy", "Movie Collaborations"].map(
-      (segment, index) => (
-        <Title key={index}>{segment}</Title>
-      ),
-    )}
+    <Title>{`Christopher Nolan & Cillian Murphy \nMovie Collaborations`}</Title>
   </TitleContainer>
 );

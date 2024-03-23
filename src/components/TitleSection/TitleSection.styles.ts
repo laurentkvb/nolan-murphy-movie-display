@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TitleContainer = styled.div`
   display: flex;
@@ -8,5 +8,5 @@ export const TitleContainer = styled.div`
 `;
 
 export const Title = styled.h1`
-  line-height: 20px;
+  white-space: pre-line;
 `;
