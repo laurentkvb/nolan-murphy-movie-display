@@ -16,6 +16,7 @@ and the personal preferences
 - Enhance efficiency in data retrieval and storage processes.
 - Create a visual representation to display the retrieved information effectively.
 - Fine-tune the visual presentation to ensure optimal user experience and clarity.
+- Implement tests along the way for the hooks and other business logic regarding the API.
 
 
 ## Live Website
