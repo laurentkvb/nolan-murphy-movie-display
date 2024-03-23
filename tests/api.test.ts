@@ -1,4 +1,4 @@
-import { getAllMovieCredits, getMoviesInvolvingActors } from "../src/api";
+import { getAllMovieCredits, getMoviesInvolvingActors } from "../src/api/api";
 
 // Mocking fetch function
 const mockFetch = jest.fn();
